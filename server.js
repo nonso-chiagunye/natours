@@ -25,44 +25,6 @@ mongoose
   })
   .then(() => console.log('DB connection established!'));
 
-// Create a document out of the Model
-
-/*
-const testTour = new Tour({
-  name: 'The Forest Hiker',
-  rating: 4.7,
-  price: 497,
-});
-
-*/
-
-// Create a new testTour
-/*
-
-const testTour = new Tour({
-  name: 'The Park Camper',
-  price: 997,
-});
-
-// Save the testTour document to the database (tours database)
-
-testTour
-  .save()
-  .then((doc) => {
-    // Save will return a promise
-    console.log(doc); // doc is the new document saved to the database.
-  })
-  .catch((err) => {
-    console.log('ERROR!:', err);
-  });
-
-
-*/
-
-// console.log(app.get('env')); // Check the environment variable.
-// Environment variable: Used to define the global environment on which the node app is running.
-// console.log(process.env);
-
 const port = process.env.PORT || 3000;
 
 const server = app.listen(port, () => {
