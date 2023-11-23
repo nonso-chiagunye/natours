@@ -9,6 +9,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -20,10 +21,19 @@ const bookingRouter = require('./routes/bookingRoutes');
 const viewRouter = require('./routes/viewRoutes');
 
 const app = express(); // express is a function. upon calling it will add a bunch of methods to app variable. eg is app.listen
+app.enable('trust proxy'); // Trust proxies used by deployment platform
 app.set('view engine', 'pug'); // Set pug as the template engine. Pug templates are actually called views in express.
 app.set('views', path.join(__dirname, 'views'));
 
 // 1) GLOBAL MIDDLEWARES
+
+// IMPLEMENT CORS for Simple requests (GET / POST Requests)
+app.use(cors());
+// app.use(cors({
+//   origin: 'https://www.example.com'  // Allow only a specific domain, example.com to create request to the API
+// }))
+
+app.options('*', cors()); // Allow preflight requests (DELETE, PATCH) in cors for all routes.
 
 // Serving static files
 // app.use(express.static(`${__dirname}/public`));
