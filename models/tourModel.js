@@ -146,34 +146,6 @@ tourSchema.pre('save', function (next) {
   next();
 });
 
-// RESPONSIBLE FOR PERFORMING THE EMBEDDING
-
-// tourSchema.pre('save', async function (next) {
-//   const guidesPromises = this.guides.map(async (id) => await User.findById(id));
-//   this.guides = await Promise.all(guidesPromises);  // Embed users (guides) in tour document.
-
-//   next();
-// });
-
-// tourSchema.pre('save', function (next) {
-//   console.log('Will save document.....');
-//   next();
-// });
-
-// post DOCUMENT MIDDLEWARE: Runs on .save() and .create() commands. (Acts AFTER the document is saved to the db)
-
-// tourSchema.post('save', function (doc, next) {
-//   console.log(doc);
-//   next();
-// });
-
-// QUERY MIDDLEWARE
-
-// tourSchema.pre('find', function (next) {
-//   this.find({ secretTour: { $ne: true } }); // Do not display secretTours
-//   next();
-// });
-
 // Using regex, any query that starts with find
 tourSchema.pre(/^find/, function (next) {
   this.find({ secretTour: { $ne: true } }); // Do not display secretTours
@@ -191,11 +163,11 @@ tourSchema.pre(/^find/, function (next) {
   next();
 });
 
-tourSchema.post(/^find/, function (docs, next) {
-  // console.log(`Query took ${Date.now() - this.start} milliseconds`);
-  // console.log(docs); // Do not display secretTours
-  next();
-});
+// tourSchema.post(/^find/, function (docs, next) {
+//   // console.log(`Query took ${Date.now() - this.start} milliseconds`);
+//   // console.log(docs); // Do not display secretTours
+//   next();
+// });
 
 // AGGREGATION MIDDLEWARE
 
@@ -206,7 +178,6 @@ tourSchema.pre('aggregate', function (next) {
     this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
   }
 
-  // console.log(this.pipeline());
   next();
 });
 

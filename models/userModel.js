@@ -93,7 +93,6 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
       10,
     );
 
-    // console.log(this.passwordChangedAt, JWTTimestamp);
     return JWTTimestamp < changedTimestamp;
   }
   return false;
@@ -106,8 +105,6 @@ userSchema.methods.createPasswordResetToken = function () {
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
-
-  // console.log({ resetToken }, this.passwordResetToken);
 
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 

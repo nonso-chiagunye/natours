@@ -1,14 +1,13 @@
 const AppError = require('../utils/appError');
 
 const handleCastErrorDB = (err) => {
-  // console.log(err);
   const message = `Invalid ${err.path}: ${err.value}.`;
   return new AppError(message, 400);
 };
 
 const handleDuplicateFieldsDB = (err) => {
   const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
-  // console.log(value);
+
   const message = `Duplicate field value: ${value}. Please use another value!`;
   return new AppError(message, 400);
 };
@@ -79,26 +78,6 @@ const sendErrorProd = (err, req, res) => {
   });
 };
 
-// const sendErrorProd = (err, req, res) => {
-//   const msg = err.isOperational
-//     ? err.message
-//     : 'this is unexpected -- please contact support';
-//   !err.isOperational && console.error('error 🥵', err);
-
-//   if (req.originalUrl.match(/^[/]api[/]v/)) {
-//     res.status(err.statusCode).json({
-//       status: err.status,
-//       message: msg,
-//       stack: err.stack,
-//     });
-//   } else {
-//     res.status(err.statusCode).render('error', {
-//       status: err.status,
-//       message: msg,
-//     });
-//   }
-// };
-
 module.exports = (err, req, res, next) => {
   // console.log(err.stack); // err.stack will show where the error happened
   err.statusCode = err.statusCode || 500;
@@ -108,7 +87,6 @@ module.exports = (err, req, res, next) => {
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, req, res);
   } else if (process.env.NODE_ENV === 'production') {
-    console.log(err);
     let error = Object.assign(err);
     // error.message = err.message;
     // let error = { ...err, name: err.name };
@@ -119,8 +97,7 @@ module.exports = (err, req, res, next) => {
       error = handleValidationErrorDB(error);
     if (error.name === 'JsonWebTokenError') error = handleJWTError();
     if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
-    console.log(err.message);
-    console.log(error.message);
+
     sendErrorProd(error, req, res);
   }
 };
